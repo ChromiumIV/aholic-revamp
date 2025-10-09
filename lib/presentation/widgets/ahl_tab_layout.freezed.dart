@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TabItem {
 
- String get title; Color get titleColor; Icon? get icon;
+ String get title; Color get titleColor; Color get inactiveTitleColor; Icon? get icon;
 /// Create a copy of TabItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TabItemCopyWith<TabItem> get copyWith => _$TabItemCopyWithImpl<TabItem>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TabItem&&(identical(other.title, title) || other.title == title)&&(identical(other.titleColor, titleColor) || other.titleColor == titleColor)&&(identical(other.icon, icon) || other.icon == icon));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TabItem&&(identical(other.title, title) || other.title == title)&&(identical(other.titleColor, titleColor) || other.titleColor == titleColor)&&(identical(other.inactiveTitleColor, inactiveTitleColor) || other.inactiveTitleColor == inactiveTitleColor)&&(identical(other.icon, icon) || other.icon == icon));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,titleColor,icon);
+int get hashCode => Object.hash(runtimeType,title,titleColor,inactiveTitleColor,icon);
 
 @override
 String toString() {
-  return 'TabItem(title: $title, titleColor: $titleColor, icon: $icon)';
+  return 'TabItem(title: $title, titleColor: $titleColor, inactiveTitleColor: $inactiveTitleColor, icon: $icon)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TabItemCopyWith<$Res>  {
   factory $TabItemCopyWith(TabItem value, $Res Function(TabItem) _then) = _$TabItemCopyWithImpl;
 @useResult
 $Res call({
- String title, Color titleColor, Icon? icon
+ String title, Color titleColor, Color inactiveTitleColor, Icon? icon
 });
 
 
@@ -62,10 +62,11 @@ class _$TabItemCopyWithImpl<$Res>
 
 /// Create a copy of TabItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? titleColor = null,Object? icon = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? titleColor = null,Object? inactiveTitleColor = null,Object? icon = freezed,}) {
   return _then(_self.copyWith(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,titleColor: null == titleColor ? _self.titleColor : titleColor // ignore: cast_nullable_to_non_nullable
+as Color,inactiveTitleColor: null == inactiveTitleColor ? _self.inactiveTitleColor : inactiveTitleColor // ignore: cast_nullable_to_non_nullable
 as Color,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as Icon?,
   ));
@@ -152,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  Color titleColor,  Icon? icon)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  Color titleColor,  Color inactiveTitleColor,  Icon? icon)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TabItem() when $default != null:
-return $default(_that.title,_that.titleColor,_that.icon);case _:
+return $default(_that.title,_that.titleColor,_that.inactiveTitleColor,_that.icon);case _:
   return orElse();
 
 }
@@ -173,10 +174,10 @@ return $default(_that.title,_that.titleColor,_that.icon);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  Color titleColor,  Icon? icon)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  Color titleColor,  Color inactiveTitleColor,  Icon? icon)  $default,) {final _that = this;
 switch (_that) {
 case _TabItem():
-return $default(_that.title,_that.titleColor,_that.icon);case _:
+return $default(_that.title,_that.titleColor,_that.inactiveTitleColor,_that.icon);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +194,10 @@ return $default(_that.title,_that.titleColor,_that.icon);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  Color titleColor,  Icon? icon)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  Color titleColor,  Color inactiveTitleColor,  Icon? icon)?  $default,) {final _that = this;
 switch (_that) {
 case _TabItem() when $default != null:
-return $default(_that.title,_that.titleColor,_that.icon);case _:
+return $default(_that.title,_that.titleColor,_that.inactiveTitleColor,_that.icon);case _:
   return null;
 
 }
@@ -208,11 +209,12 @@ return $default(_that.title,_that.titleColor,_that.icon);case _:
 
 
 class _TabItem implements TabItem {
-  const _TabItem({required this.title, this.titleColor = Colors.black, this.icon});
+  const _TabItem({required this.title, this.titleColor = Colors.black, this.inactiveTitleColor = AhlColors.transBlack50, this.icon});
   
 
 @override final  String title;
 @override@JsonKey() final  Color titleColor;
+@override@JsonKey() final  Color inactiveTitleColor;
 @override final  Icon? icon;
 
 /// Create a copy of TabItem
@@ -225,16 +227,16 @@ _$TabItemCopyWith<_TabItem> get copyWith => __$TabItemCopyWithImpl<_TabItem>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TabItem&&(identical(other.title, title) || other.title == title)&&(identical(other.titleColor, titleColor) || other.titleColor == titleColor)&&(identical(other.icon, icon) || other.icon == icon));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TabItem&&(identical(other.title, title) || other.title == title)&&(identical(other.titleColor, titleColor) || other.titleColor == titleColor)&&(identical(other.inactiveTitleColor, inactiveTitleColor) || other.inactiveTitleColor == inactiveTitleColor)&&(identical(other.icon, icon) || other.icon == icon));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,titleColor,icon);
+int get hashCode => Object.hash(runtimeType,title,titleColor,inactiveTitleColor,icon);
 
 @override
 String toString() {
-  return 'TabItem(title: $title, titleColor: $titleColor, icon: $icon)';
+  return 'TabItem(title: $title, titleColor: $titleColor, inactiveTitleColor: $inactiveTitleColor, icon: $icon)';
 }
 
 
@@ -245,7 +247,7 @@ abstract mixin class _$TabItemCopyWith<$Res> implements $TabItemCopyWith<$Res> {
   factory _$TabItemCopyWith(_TabItem value, $Res Function(_TabItem) _then) = __$TabItemCopyWithImpl;
 @override @useResult
 $Res call({
- String title, Color titleColor, Icon? icon
+ String title, Color titleColor, Color inactiveTitleColor, Icon? icon
 });
 
 
@@ -262,10 +264,11 @@ class __$TabItemCopyWithImpl<$Res>
 
 /// Create a copy of TabItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? titleColor = null,Object? icon = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? titleColor = null,Object? inactiveTitleColor = null,Object? icon = freezed,}) {
   return _then(_TabItem(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,titleColor: null == titleColor ? _self.titleColor : titleColor // ignore: cast_nullable_to_non_nullable
+as Color,inactiveTitleColor: null == inactiveTitleColor ? _self.inactiveTitleColor : inactiveTitleColor // ignore: cast_nullable_to_non_nullable
 as Color,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
 as Icon?,
   ));

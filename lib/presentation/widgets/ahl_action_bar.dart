@@ -23,14 +23,25 @@ class AhlActionBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: "ahl_action_bar",
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-          color: AhlColors.transBlack90,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(16)),
+            color: AhlColors.transBlack81,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x3F000000),
+                blurRadius: 8,
+                offset: Offset(0, 2),
+                spreadRadius: 0,
+              ),
+            ],
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: IntrinsicHeight(child: Row(children: _buildChildren(context))),
         ),
-        clipBehavior: Clip.antiAlias,
-        child: IntrinsicHeight(child: Row(children: _buildChildren(context))),
       ),
     );
   }
@@ -41,9 +52,9 @@ class AhlActionBar extends StatelessWidget {
     final lwb = leadingWidgetBuilder;
     if (lwb != null) {
       children.add(lwb(context));
+    } else {
+      children.add(Expanded(child: Container()));
     }
-
-    children.add(Expanded(child: Container()));
 
     final ticn = trailingIcon;
     if (ticn != null) {

@@ -15,6 +15,7 @@ abstract class TabItem with _$TabItem {
   const factory TabItem({
     required String title,
     @Default(Colors.black) Color titleColor,
+    @Default(AhlColors.transBlack50) Color inactiveTitleColor,
     Icon? icon,
   }) = _TabItem;
 }
@@ -50,50 +51,37 @@ class _AhlTabLayoutState extends State<AhlTabLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: widget.items.map((i) => _buildItem(i)).toList());
+    return Row(
+      children: widget.items.map((i) => _buildItem(context, i)).toList(),
+    );
   }
 
-  Widget _buildItem(TabItem item) {
-    if (_selectedItem == item) {
-      return Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: AhlColors.transWhite20,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-          child: Text(
-            item.title,
-            style: TextStyle(
-              color: widget.mode == TabLayoutMode.dark
-                  ? Colors.white
-                  : Colors.black,
-            ),
-          ),
-        ),
-      );
-    }
+  Widget _buildItem(BuildContext context, TabItem item) {
+    final isSelected = _selectedItem == item;
 
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedItem = item;
-        });
-        widget.onSelected?.call(item);
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12.0),
-          color: Colors.transparent,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Text(
-            item.title,
-            style: TextStyle(
-              color: widget.mode == TabLayoutMode.dark
-                  ? Colors.white
-                  : Colors.black,
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0),
+      child: GestureDetector(
+        onTap: () {
+          if (!isSelected) {
+            setState(() {
+              _selectedItem = item;
+            });
+            widget.onSelected?.call(item);
+          }
+        },
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8.0),
+            color: isSelected ? AhlColors.transWhite20 : Colors.transparent,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+            child: Text(
+              item.title,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: isSelected ? item.titleColor : item.inactiveTitleColor,
+              ),
             ),
           ),
         ),

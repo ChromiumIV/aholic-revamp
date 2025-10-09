@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class AhlColors {
   static const Color transBlack90 = Color.fromARGB(230, 0, 0, 0);
+  static const Color transBlack81 = Color.fromARGB(207, 0, 0, 0);
   static const Color transBlack50 = Color.fromARGB(128, 0, 0, 0);
   static const Color transBlack30 = Color.fromARGB(77, 0, 0, 0);
+  static const Color transBlack20 = Color.fromARGB(51, 0, 0, 0);
   static const Color transBlack12 = Color.fromARGB(31, 0, 0, 0);
   static const Color transBlack08 = Color.fromARGB(20, 0, 0, 0);
 

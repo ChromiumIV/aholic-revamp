@@ -1,4 +1,10 @@
+import 'dart:math' as math;
+
+import 'package:aholic/presentation/theme/ahl_colors.dart';
 import 'package:aholic/presentation/widgets/ahl_action_bar.dart';
+import 'package:aholic/presentation/widgets/ahl_bottom_navigation_bar.dart';
+import 'package:aholic/presentation/widgets/ahl_calendar.dart';
+import 'package:aholic/presentation/widgets/ahl_icon_button.dart';
 import 'package:aholic/presentation/widgets/ahl_scaffold.dart';
 import 'package:aholic/presentation/widgets/ahl_tab_layout.dart';
 import 'package:aholic/presentation/widgets/ahl_text.dart';
@@ -6,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -46,35 +53,73 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return AhlScaffold(
-      body: Column(
-        children: [
-          TextButton(
-            onPressed: () => {
-              context.go("/timeline/edit"),
-
-              // setState(() {
-              //   var random = Random();
-              //   randomString = generateRandomString(random.nextInt(30));
-              //   debugPrint(randomString);
-              // }),
-            },
-            child: Text("CHANGE"),
-          ),
-          AhlActionBar(
-            leadingWidgetBuilder: (context) {
-              return AhlTabLayout(
-                mode: TabLayoutMode.dark,
-                items: [
-                  TabItem(title: "Timeline"),
-                  TabItem(title: "Monthly"),
-                ],
+      body: AhlCalendar(),
+      actionBar: _buildActionBar(context),
+      bottomNavigationBar: AhlBottomNavigationBar(
+        items: [
+          BottomNavigationItem(icon: LucideIcons.rows2500),
+          BottomNavigationItem(icon: LucideIcons.layoutDashboard500),
+          BottomNavigationItem(
+            builder: (context, isActive) {
+              return Transform.rotate(
+                angle: math.pi / 4,
+                child: SizedBox(
+                  width: 42.0,
+                  height: 42.0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Icon(Icons.grid_3x3, color: Colors.white),
+                  ),
+                ),
               );
             },
-            trailingIcon: Icons.chevron_right,
           ),
+          BottomNavigationItem(icon: LucideIcons.blend500),
+          BottomNavigationItem(icon: LucideIcons.user500),
         ],
       ),
-      actionBar: Container(),
+    );
+  }
+
+  Widget _buildActionBar(BuildContext context) {
+    return AhlActionBar(
+      leadingWidgetBuilder: (context) {
+        return Expanded(
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                child: AhlTabLayout(
+                  initialIndex: 0,
+                  mode: TabLayoutMode.dark,
+                  items: [
+                    TabItem(
+                      title: "Timeline",
+                      titleColor: Colors.white,
+                      inactiveTitleColor: AhlColors.transWhite20,
+                    ),
+                    TabItem(
+                      title: "Monthly",
+                      titleColor: Colors.white,
+                      inactiveTitleColor: AhlColors.transWhite20,
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              AhlIconButton(
+                LucideIcons.bolt400,
+                iconColor: Colors.white,
+                hoveredIconColor: Colors.white,
+              ),
+            ],
+          ),
+        );
+      },
+      trailingIcon: LucideIcons.chevronRight400,
     );
   }
 }
