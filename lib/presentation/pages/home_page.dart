@@ -3,13 +3,11 @@ import 'dart:math' as math;
 import 'package:aholic/presentation/theme/ahl_colors.dart';
 import 'package:aholic/presentation/widgets/ahl_action_bar.dart';
 import 'package:aholic/presentation/widgets/ahl_bottom_navigation_bar.dart';
-import 'package:aholic/presentation/widgets/ahl_calendar.dart';
+import 'package:aholic/presentation/widgets/ahl_calendar_4.dart';
 import 'package:aholic/presentation/widgets/ahl_icon_button.dart';
 import 'package:aholic/presentation/widgets/ahl_scaffold.dart';
 import 'package:aholic/presentation/widgets/ahl_tab_layout.dart';
-import 'package:aholic/presentation/widgets/ahl_text.dart';
 import 'package:flutter/material.dart';
-import 'dart:math';
 
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -31,18 +29,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String randomString = "";
-
-  String generateRandomString(int length) {
-    const availableChars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-    final random = Random();
-    final randomString = List.generate(
-      length,
-      (index) => availableChars[random.nextInt(availableChars.length)],
-    ).join();
-    return randomString;
-  }
+  bool _openItemMenu = false;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +40,7 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return AhlScaffold(
-      body: AhlCalendar(),
+      body: AhlCalendar4(),
       actionBar: _buildActionBar(context),
       bottomNavigationBar: AhlBottomNavigationBar(
         items: [
@@ -87,6 +74,37 @@ class _HomePageState extends State<HomePage> {
   Widget _buildActionBar(BuildContext context) {
     return AhlActionBar(
       leadingWidgetBuilder: (context) {
+        if (_openItemMenu) {
+          return Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _ItemButton(
+                    "Event",
+                    icon: LucideIcons.calendar400,
+                    onPressed: () {
+                      context.go("/events/edit");
+                    },
+                  ),
+                  _ItemButton(
+                    "Reminder",
+                    icon: LucideIcons.alarmClock400,
+                    onPressed: () {},
+                  ),
+                  _ItemButton(
+                    "Transaction",
+                    icon: LucideIcons.circleDollarSign400,
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+
         return Expanded(
           child: Row(
             children: [
@@ -94,6 +112,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: AhlTabLayout(
                   initialIndex: 0,
+                  type: TabLayoutType.secondary,
                   mode: TabLayoutMode.dark,
                   items: [
                     TabItem(
@@ -111,15 +130,86 @@ class _HomePageState extends State<HomePage> {
               ),
               Spacer(),
               AhlIconButton(
-                LucideIcons.bolt400,
+                icon: LucideIcons.bolt400,
                 iconColor: Colors.white,
                 hoveredIconColor: Colors.white,
+                onPressed: () {
+                  context.go("/timelines");
+                },
               ),
             ],
           ),
         );
       },
-      trailingIcon: LucideIcons.chevronRight400,
+      // trailingIcon: _openItemMenu ? LucideIcons.x400 : LucideIcons.plus400,
+      trailingWidgetBuilder: (context) {
+        return AhlIconButton(
+          onPressed: () {
+            setState(() {
+              _openItemMenu = !_openItemMenu;
+            });
+          },
+          builder: (context) => AnimatedRotation(
+            turns: _openItemMenu ? 0.125 : 0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut,
+            child: Icon(LucideIcons.plus400, color: Colors.white),
+          ),
+        );
+      },
+      onTrailingBtnClick: () {},
+    );
+  }
+}
+
+class _ItemButton extends StatefulWidget {
+  const _ItemButton(this.title, {super.key, this.icon, this.onPressed});
+
+  final String title;
+  final IconData? icon;
+  final VoidCallback? onPressed;
+
+  @override
+  State<_ItemButton> createState() => _ItemButtonState();
+}
+
+class _ItemButtonState extends State<_ItemButton> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTapDown: (_) => setState(() {
+        _isPressed = true;
+      }),
+      onTapUp: (_) => setState(() {
+        _isPressed = false;
+      }),
+      onTapCancel: () => setState(() {
+        _isPressed = false;
+      }),
+      onTap: widget.onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          color: _isPressed ? AhlColors.transBlack50 : Colors.transparent,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Row(
+            children: [
+              Icon(widget.icon, color: Colors.white),
+              SizedBox(width: 8.0),
+              Text(
+                widget.title,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

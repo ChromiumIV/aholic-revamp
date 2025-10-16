@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:aholic/presentation/routing/router.dart';
 import 'package:aholic/presentation/theme/ahl_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:local_hero/local_hero.dart';
 
 class AhlApp extends StatelessWidget {
   const AhlApp({super.key});

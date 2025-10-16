@@ -51,12 +51,81 @@ class _AhlTabLayoutState extends State<AhlTabLayout> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: widget.items.map((i) => _buildItem(context, i)).toList(),
+    if (widget.type == TabLayoutType.secondary) {
+      return _buildSecondaryTabLayout(context);
+    }
+
+    return _buildPrimaryTabLayout(context);
+  }
+
+  Widget _buildPrimaryTabLayout(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(width: 1.0, color: AhlColors.transBlack12),
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            children: widget.items
+                .map((i) => _buildPrimaryItem(context, i))
+                .toList(),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildItem(BuildContext context, TabItem item) {
+  Widget _buildSecondaryTabLayout(BuildContext context) {
+    return Row(
+      children: widget.items
+          .map((i) => _buildSecondaryItem(context, i))
+          .toList(),
+    );
+  }
+
+  Widget _buildPrimaryItem(BuildContext context, TabItem item) {
+    final isSelected = _selectedItem == item;
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 16.0),
+      child: GestureDetector(
+        onTap: () {
+          if (!isSelected) {
+            setState(() {
+              _selectedItem = item;
+            });
+            widget.onSelected?.call(item);
+          }
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 3.0,
+                color: isSelected ? Colors.black : Colors.transparent,
+              ),
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 9.0),
+            child: Text(
+              item.title,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: isSelected ? item.titleColor : item.inactiveTitleColor,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSecondaryItem(BuildContext context, TabItem item) {
     final isSelected = _selectedItem == item;
 
     return Padding(

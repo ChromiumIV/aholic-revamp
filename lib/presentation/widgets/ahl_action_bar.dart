@@ -4,39 +4,55 @@ import 'package:aholic/presentation/theme/ahl_colors.dart';
 import 'package:aholic/presentation/widgets/ahl_icon_button.dart';
 import 'package:aholic/presentation/widgets/ahl_text.dart';
 import 'package:flutter/material.dart';
-
-typedef LeadingWidgetBuilder = Widget Function(BuildContext context);
+import 'package:local_hero/local_hero.dart';
 
 class AhlActionBar extends StatelessWidget {
   AhlActionBar({
     super.key,
-    this.leadingWidgetBuilder,
+    this.leadingIcon,
     this.trailingIcon,
+    this.onLeadingBtnClick,
+    this.leadingWidgetBuilder,
+    this.trailingWidgetBuilder,
     this.onTrailingBtnClick,
+    this.padding = const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 33.0),
+    this.fillColor = AhlColors.transBlack81,
+    this.iconColor = Colors.white,
+    this.dividerColor = AhlColors.transWhite20,
+    this.hasShadow = true,
   });
 
-  LeadingWidgetBuilder? leadingWidgetBuilder;
+  WidgetBuilder? leadingWidgetBuilder;
+  WidgetBuilder? trailingWidgetBuilder;
+  IconData? leadingIcon;
   IconData? trailingIcon;
+  VoidCallback? onLeadingBtnClick;
   VoidCallback? onTrailingBtnClick;
+  EdgeInsets padding;
+  Color fillColor;
+  Color iconColor;
+  Color dividerColor;
+  bool hasShadow;
 
   @override
   Widget build(BuildContext context) {
     return Hero(
       tag: "ahl_action_bar",
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
+        padding: padding,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(16)),
-            color: AhlColors.transBlack81,
+            color: fillColor,
             boxShadow: [
-              BoxShadow(
-                color: Color(0x3F000000),
-                blurRadius: 8,
-                offset: Offset(0, 2),
-                spreadRadius: 0,
-              ),
+              if (hasShadow)
+                BoxShadow(
+                  color: Color(0x3F000000),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                  spreadRadius: 0,
+                ),
             ],
           ),
           clipBehavior: Clip.antiAlias,
@@ -50,31 +66,56 @@ class AhlActionBar extends StatelessWidget {
     var children = <Widget>[];
 
     final lwb = leadingWidgetBuilder;
+    final licn = leadingIcon;
+
+    if (licn != null) {
+      children.add(
+        AhlIconButton(
+          icon: licn,
+          iconColor: iconColor,
+          hoveredIconColor: iconColor,
+          onPressed: () {
+            onLeadingBtnClick?.call();
+          },
+        ),
+      );
+      children.add(Spacer());
+    }
     if (lwb != null) {
       children.add(lwb(context));
-    } else {
+    }
+
+    if (lwb == null && licn == null) {
       children.add(Expanded(child: Container()));
     }
 
+    final twb = trailingWidgetBuilder;
     final ticn = trailingIcon;
-    if (ticn != null) {
+
+    if (twb != null || ticn != null) {
       children.add(
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12.0),
           child: VerticalDivider(
             thickness: 2.0,
             width: 2.0,
-            color: AhlColors.transWhite20,
+            color: dividerColor,
           ),
         ),
       );
+    }
 
+    if (twb != null) {
+      children.add(twb(context));
+    } else if (ticn != null) {
       children.add(
         AhlIconButton(
-          ticn,
-          iconColor: Colors.white,
-          hoveredIconColor: Colors.white,
-          onPressed: () => {},
+          icon: ticn,
+          iconColor: iconColor,
+          hoveredIconColor: iconColor,
+          onPressed: () {
+            onTrailingBtnClick?.call();
+          },
         ),
       );
     }

@@ -11,6 +11,7 @@ class AhlColors {
 
   static const Color transWhite50 = Color.fromARGB(128, 255, 255, 255);
   static const Color transWhite20 = Color.fromARGB(51, 255, 255, 255);
+  static const Color transWhite12 = Color.fromARGB(31, 255, 255, 255);
 
   static const Color yellow = Color(0xFFFDD548);
   static const Color orange = Color(0xFFFFAC7D);
@@ -24,4 +25,22 @@ class AhlColors {
   static const Color mint = Color(0xFF7EF0B3);
   static const Color green = Color(0xFFA7EA72);
   static const Color lime = Color(0xFFDFED3C);
+
+  static const Color gray08 = Color(0xFFEBEBEB);
+  static const Color gray20 = Color(0xFFCCCCCC);
+
+  static const List<Color> all = [
+    yellow,
+    orange,
+    red,
+    pink,
+    violet,
+    purple,
+    blue,
+    azure,
+    cyan,
+    mint,
+    green,
+    lime,
+  ];
 }
