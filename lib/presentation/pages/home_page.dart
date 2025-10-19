@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'package:aholic/presentation/fragments/space_fragment.dart';
 import 'package:aholic/presentation/theme/ahl_colors.dart';
 import 'package:aholic/presentation/widgets/ahl_action_bar.dart';
 import 'package:aholic/presentation/widgets/ahl_bottom_navigation_bar.dart';
@@ -30,6 +31,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _openItemMenu = false;
+  int _tabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +42,18 @@ class _HomePageState extends State<HomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return AhlScaffold(
-      body: AhlCalendar4(),
+      body: IndexedStack(
+        index: _tabIndex,
+        children: [AhlCalendar4(), SpaceFragment()],
+      ),
+
       actionBar: _buildActionBar(context),
       bottomNavigationBar: AhlBottomNavigationBar(
+        onChanged: (index) {
+          setState(() {
+            _tabIndex = index;
+          });
+        },
         items: [
           BottomNavigationItem(icon: LucideIcons.rows2500),
           BottomNavigationItem(icon: LucideIcons.layoutDashboard500),
@@ -97,7 +108,9 @@ class _HomePageState extends State<HomePage> {
                   _ItemButton(
                     "Transaction",
                     icon: LucideIcons.circleDollarSign400,
-                    onPressed: () {},
+                    onPressed: () {
+                      context.go("/transactions/edit");
+                    },
                   ),
                 ],
               ),

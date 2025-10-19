@@ -8,6 +8,8 @@ part 'ahl_bottom_navigation_bar.freezed.dart';
 typedef BottomNavigationItemBuilder =
     Widget Function(BuildContext context, bool isActive);
 
+typedef OnBottomNavigationItemChanged = void Function(int index);
+
 @freezed
 abstract class BottomNavigationItem with _$BottomNavigationItem {
   @Assert(
@@ -27,10 +29,12 @@ class AhlBottomNavigationBar extends StatefulWidget {
     super.key,
     required this.items,
     this.initialIndex = 0,
+    this.onChanged,
   });
 
   final List<BottomNavigationItem> items;
   final int initialIndex;
+  final OnBottomNavigationItemChanged? onChanged;
 
   @override
   State<AhlBottomNavigationBar> createState() => _AhlBottomNavigationBarState();
@@ -70,6 +74,8 @@ class _AhlBottomNavigationBarState extends State<AhlBottomNavigationBar> {
         onTap: () => {
           setState(() {
             _selectedItem = item;
+            final index = widget.items.indexOf(item);
+            widget.onChanged?.call(index);
           }),
         },
         child: Container(

@@ -1,5 +1,6 @@
 import 'package:aholic/presentation/pages/edit_event_page.dart';
 import 'package:aholic/presentation/pages/edit_timeline_page.dart';
+import 'package:aholic/presentation/pages/edit_transaction_page.dart';
 import 'package:aholic/presentation/pages/home_page.dart';
 import 'package:aholic/presentation/pages/timelines_page.dart';
 import 'package:go_router/go_router.dart';
@@ -23,6 +24,10 @@ final router = GoRouter(
         GoRoute(
           path: 'events/edit',
           builder: (context, state) => EditEventPage(),
+        ),
+        GoRoute(
+          path: 'transactions/edit',
+          builder: (context, state) => EditTransactionPage(),
         ),
       ],
     ),

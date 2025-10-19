@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../theme/ahl_colors.dart';
+
+typedef TextFieldLeadingWidgetBuilder =
+    Widget Function(BuildContext contexxt, bool isFocused);
 
 class AhlTextField extends StatefulWidget {
   const AhlTextField({
@@ -23,6 +28,8 @@ class AhlTextField extends StatefulWidget {
     this.maxLines,
     this.style,
     this.label,
+    this.textAlignment = TextAlign.start,
+    this.leadingWidgetBuilder,
   }) : super(key: key);
 
   final bool autofocus;
@@ -43,6 +50,8 @@ class AhlTextField extends StatefulWidget {
   final int? maxLines;
   final TextStyle? style;
   final String? label;
+  final TextAlign textAlignment;
+  final TextFieldLeadingWidgetBuilder? leadingWidgetBuilder;
 
   @override
   State<AhlTextField> createState() => _AhlTextFieldState();
@@ -131,29 +140,70 @@ class _AhlTextFieldState extends State<AhlTextField> {
                     vertical: 8.0,
                     horizontal: widget.underlineColor != null ? 0 : 12.0,
                   ),
-                  child: TextField(
-                    autofocus: widget.autofocus,
-                    controller: _controller,
-                    keyboardType: widget.keyboardType,
-                    maxLines: widget.maxLines,
-                    minLines: widget.minLines,
-                    cursorColor: widget.textColor,
-                    style:
-                        (widget.style ?? Theme.of(context).textTheme.bodyLarge)
-                            ?.copyWith(color: widget.textColor),
-                    decoration: InputDecoration(
-                      counterText: '',
-                      hintText: _isFocused ? '' : widget.hintText,
-                      hintStyle:
-                          (widget.style ??
-                                  Theme.of(context).textTheme.bodyLarge)
-                              ?.copyWith(color: widget.hintColor),
-                      border: InputBorder.none,
-                      isDense: true,
-                    ),
-                    obscureText: widget.obscureText,
-                    enabled: widget.isEnabled,
-                    onChanged: widget.onTextChanged,
+                  child: Row(
+                    children: [
+                      if (widget.leadingWidgetBuilder != null)
+                        widget.leadingWidgetBuilder?.call(
+                              context,
+                              _isFocused,
+                            ) ??
+                            Container(),
+                      if (widget.leadingWidgetBuilder != null)
+                        SizedBox(width: 12.0),
+                      Expanded(
+                        child: TextField(
+                          autofocus: widget.autofocus,
+                          controller: _controller,
+                          keyboardType:
+                              widget.keyboardType == TextInputType.number
+                              ? TextInputType.numberWithOptions(
+                                  decimal: true,
+                                  signed: false,
+                                )
+                              : widget.keyboardType,
+                          maxLines: widget.maxLines,
+                          minLines: widget.minLines,
+                          cursorColor: widget.textColor,
+                          textAlign: widget.textAlignment,
+                          style:
+                              (widget.style ??
+                                      Theme.of(context).textTheme.bodyLarge)
+                                  ?.copyWith(color: widget.textColor),
+                          decoration: InputDecoration(
+                            counterText: '',
+                            hintText: _isFocused ? '' : widget.hintText,
+                            hintStyle:
+                                (widget.style ??
+                                        Theme.of(context).textTheme.bodyLarge)
+                                    ?.copyWith(color: widget.hintColor),
+                            border: InputBorder.none,
+                            isDense: true,
+                          ),
+                          obscureText: widget.obscureText,
+                          enabled: widget.isEnabled,
+                          onChanged: widget.onTextChanged,
+                          inputFormatters:
+                              widget.keyboardType == TextInputType.number
+                              ? [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(r"[0-9.]"),
+                                  ),
+                                  TextInputFormatter.withFunction((
+                                    oldValue,
+                                    newValue,
+                                  ) {
+                                    final text = newValue.text;
+                                    return text.isEmpty
+                                        ? newValue
+                                        : double.tryParse(text) == null
+                                        ? oldValue
+                                        : newValue;
+                                  }),
+                                ]
+                              : null,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

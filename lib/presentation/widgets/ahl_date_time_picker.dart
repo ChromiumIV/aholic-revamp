@@ -14,6 +14,7 @@ class AhlDateTimePicker extends StatefulWidget {
     this.showTimePicker = true,
     this.fillColor = AhlColors.transBlack12,
     this.hoveredFillColor,
+    this.direction = Axis.vertical,
   });
 
   final DateTime value;
@@ -21,6 +22,7 @@ class AhlDateTimePicker extends StatefulWidget {
   final bool showTimePicker;
   final Color fillColor;
   final Color? hoveredFillColor;
+  final Axis direction;
 
   @override
   State<AhlDateTimePicker> createState() => _AhlDateTimePickerState();
@@ -40,13 +42,22 @@ class _AhlDateTimePickerState extends State<AhlDateTimePicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _buildDatePicker(context),
-        if (widget.showTimePicker) _buildTimePicker(context),
-      ],
-    );
+    return widget.direction == Axis.vertical
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildDatePicker(context),
+              if (widget.showTimePicker) _buildTimePicker(context),
+            ],
+          )
+        : Row(
+            children: [
+              Expanded(child: _buildDatePicker(context)),
+              if (widget.showTimePicker) SizedBox(width: 4.0),
+              if (widget.showTimePicker)
+                Expanded(child: _buildTimePicker(context)),
+            ],
+          );
   }
 
   Widget _buildDatePicker(BuildContext context) {
@@ -64,8 +75,12 @@ class _AhlDateTimePickerState extends State<AhlDateTimePicker> {
                   : (isPressed ? widget.hoveredFillColor : widget.fillColor),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12.0),
-                topRight: Radius.circular(12.0),
-                bottomLeft: Radius.circular(widget.showTimePicker ? 4.0 : 12.0),
+                topRight: widget.direction == Axis.vertical
+                    ? Radius.circular(12.0)
+                    : (Radius.circular(widget.showTimePicker ? 4.0 : 12.0)),
+                bottomLeft: widget.direction == Axis.vertical
+                    ? (Radius.circular(widget.showTimePicker ? 4.0 : 12.0))
+                    : (Radius.circular(12.0)),
                 bottomRight: Radius.circular(
                   widget.showTimePicker ? 4.0 : 12.0,
                 ),
@@ -80,7 +95,9 @@ class _AhlDateTimePickerState extends State<AhlDateTimePicker> {
                 ),
                 child: Text(
                   dateStr,
-                  style: Theme.of(context).textTheme.bodyLarge,
+                  style: widget.direction == Axis.vertical
+                      ? Theme.of(context).textTheme.bodyLarge
+                      : Theme.of(context).textTheme.headlineMedium,
                 ),
               ),
             ),
@@ -94,10 +111,12 @@ class _AhlDateTimePickerState extends State<AhlDateTimePicker> {
                     : (isPressed ? AhlColors.transBlack12 : Colors.transparent),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(12.0),
-                  topRight: Radius.circular(12.0),
-                  bottomLeft: Radius.circular(
-                    widget.showTimePicker ? 4.0 : 12.0,
-                  ),
+                  topRight: widget.direction == Axis.vertical
+                      ? Radius.circular(12.0)
+                      : (Radius.circular(widget.showTimePicker ? 4.0 : 12.0)),
+                  bottomLeft: widget.direction == Axis.vertical
+                      ? (Radius.circular(widget.showTimePicker ? 4.0 : 12.0))
+                      : (Radius.circular(12.0)),
                   bottomRight: Radius.circular(
                     widget.showTimePicker ? 4.0 : 12.0,
                   ),
@@ -114,7 +133,9 @@ class _AhlDateTimePickerState extends State<AhlDateTimePicker> {
     final timeStr = DateFormat("HHmm").format(_value);
 
     return Padding(
-      padding: const EdgeInsets.only(top: 4.0),
+      padding: EdgeInsets.only(
+        top: widget.direction == Axis.vertical ? 4.0 : 0,
+      ),
       child: AhlTappable(
         onPressed: () {
           setState(() {
@@ -149,8 +170,12 @@ class _AhlDateTimePickerState extends State<AhlDateTimePicker> {
                     : (isPressed ? widget.hoveredFillColor : widget.fillColor),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(4.0),
-                  topRight: Radius.circular(4.0),
-                  bottomLeft: Radius.circular(12.0),
+                  topRight: widget.direction == Axis.vertical
+                      ? Radius.circular(4.0)
+                      : Radius.circular(12.0),
+                  bottomLeft: widget.direction == Axis.vertical
+                      ? Radius.circular(12.0)
+                      : Radius.circular(4.0),
                   bottomRight: Radius.circular(12.0),
                 ),
               ),
@@ -185,8 +210,12 @@ class _AhlDateTimePickerState extends State<AhlDateTimePicker> {
                             : Colors.transparent),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(4.0),
-                    topRight: Radius.circular(4.0),
-                    bottomLeft: Radius.circular(12.0),
+                    topRight: widget.direction == Axis.vertical
+                        ? Radius.circular(4.0)
+                        : Radius.circular(12.0),
+                    bottomLeft: widget.direction == Axis.vertical
+                        ? Radius.circular(12.0)
+                        : Radius.circular(4.0),
                     bottomRight: Radius.circular(12.0),
                   ),
                 ),
