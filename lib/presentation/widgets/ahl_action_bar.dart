@@ -41,7 +41,7 @@ class AhlActionBar extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 200),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(16)),
             color: fillColor,

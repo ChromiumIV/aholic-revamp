@@ -11,7 +11,7 @@ class ChecklistWidget extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 100),
       decoration: BoxDecoration(
-        color: checklist.color,
+        color: Color(checklist.color),
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: EdgeInsets.all(12.0),
@@ -21,7 +21,7 @@ class ChecklistWidget extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(bottom: 6.0),
             child: Text(
-              checklist.title,
+              checklist.pinnable.title,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
           ),

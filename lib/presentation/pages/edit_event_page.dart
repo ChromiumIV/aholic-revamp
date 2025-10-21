@@ -132,7 +132,7 @@ class _EditEventPageState extends State<EditEventPage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 AhlIconButton(
-                  builder: (context) {
+                  builder: (context, _) {
                     return Container(
                       height: 24.0,
                       width: 24.0,
@@ -203,7 +203,7 @@ class _EditEventPageState extends State<EditEventPage> {
         child: Row(
           children: AhlColors.all.map((c) {
             return AhlIconButton(
-              builder: (context) {
+              builder: (context, _) {
                 return Container(
                   height: 24.0,
                   width: 24.0,

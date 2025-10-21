@@ -1,13 +1,17 @@
 import 'dart:math' as math;
 
+import 'package:aholic/domain/entities/space.dart';
+import 'package:aholic/domain/entities/space_user.dart';
 import 'package:aholic/presentation/fragments/space_fragment.dart';
 import 'package:aholic/presentation/theme/ahl_colors.dart';
 import 'package:aholic/presentation/widgets/ahl_action_bar.dart';
 import 'package:aholic/presentation/widgets/ahl_bottom_navigation_bar.dart';
+import 'package:aholic/presentation/widgets/ahl_breadcrumb_bar.dart';
 import 'package:aholic/presentation/widgets/ahl_calendar_4.dart';
 import 'package:aholic/presentation/widgets/ahl_icon_button.dart';
 import 'package:aholic/presentation/widgets/ahl_scaffold.dart';
 import 'package:aholic/presentation/widgets/ahl_tab_layout.dart';
+import 'package:aholic/presentation/widgets/ahl_tappable.dart';
 import 'package:flutter/material.dart';
 
 import 'package:go_router/go_router.dart';
@@ -33,6 +37,187 @@ class _HomePageState extends State<HomePage> {
   bool _openItemMenu = false;
   int _tabIndex = 0;
 
+  late Space _currentSpace;
+  List<Space> _expandedSpaces = [];
+  List<Space> _spaces = [];
+
+  bool _isBreadcrumbExpanded = false;
+
+  // late BreadcrumbItem _currentBreadcrumb;
+
+  @override
+  void initState() {
+    // _currentBreadcrumb = BreadcrumbItem(label: "Space", parent: null, children: []);
+
+    Space space = Space(
+      spaceId: 1,
+      title: 'Space',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 1,
+        userId: '',
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub1 = Space(
+      spaceId: 2,
+      title: 'Sub 1',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 2,
+        userId: '',
+        parentSpaceId: 1,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub2 = Space(
+      spaceId: 3,
+      title: 'Sub 2',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 3,
+        userId: '',
+        parentSpaceId: 2,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub3 = Space(
+      spaceId: 4,
+      title: 'Sub 3',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 3,
+        userId: '',
+        parentSpaceId: 3,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub4 = Space(
+      spaceId: 5,
+      title: 'Sub 4',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 3,
+        userId: '',
+        parentSpaceId: 4,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub5 = Space(
+      spaceId: 6,
+      title: 'Sub 5',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 3,
+        userId: '',
+        parentSpaceId: 5,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub6 = Space(
+      spaceId: 7,
+      title: 'Sub 6',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 3,
+        userId: '',
+        parentSpaceId: 6,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub7 = Space(
+      spaceId: 8,
+      title: 'Sub 7',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 3,
+        userId: '',
+        parentSpaceId: 6,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    Space sub8 = Space(
+      spaceId: 9,
+      title: 'Sub 8',
+      createdAt: DateTime.now(),
+      createdBy: '',
+      updatedAt: DateTime.now(),
+      updatedBy: '',
+      spaceUser: SpaceUser(
+        spaceId: 3,
+        userId: '',
+        parentSpaceId: 6,
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
+    );
+
+    setState(() {
+      _currentSpace = sub5;
+      _spaces = [space, sub1, sub2, sub3, sub4, sub5, sub6, sub7, sub8];
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -47,7 +232,7 @@ class _HomePageState extends State<HomePage> {
         children: [AhlCalendar4(), SpaceFragment()],
       ),
 
-      actionBar: _buildActionBar(context),
+      actionBar: _buildActionBar(context, _tabIndex),
       bottomNavigationBar: AhlBottomNavigationBar(
         onChanged: (index) {
           setState(() {
@@ -82,96 +267,155 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildActionBar(BuildContext context) {
-    return AhlActionBar(
-      leadingWidgetBuilder: (context) {
-        if (_openItemMenu) {
-          return Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              physics: const BouncingScrollPhysics(),
+  Widget _buildActionBar(BuildContext context, int index) {
+    switch (index) {
+      case 0: // Timelines
+        return AhlActionBar(
+          leadingWidgetBuilder: (context) {
+            if (_openItemMenu) {
+              return Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _ItemButton(
+                        "Event",
+                        icon: LucideIcons.calendar400,
+                        onPressed: () {
+                          context.go("/events/edit");
+                        },
+                      ),
+                      _ItemButton(
+                        "Reminder",
+                        icon: LucideIcons.alarmClock400,
+                        onPressed: () {},
+                      ),
+                      _ItemButton(
+                        "Transaction",
+                        icon: LucideIcons.circleDollarSign400,
+                        onPressed: () {
+                          context.go("/transactions/edit");
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            return Expanded(
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _ItemButton(
-                    "Event",
-                    icon: LucideIcons.calendar400,
-                    onPressed: () {
-                      context.go("/events/edit");
-                    },
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: AhlTabLayout(
+                      initialIndex: 0,
+                      type: TabLayoutType.secondary,
+                      mode: TabLayoutMode.dark,
+                      items: [
+                        TabItem(
+                          title: "Timeline",
+                          titleColor: Colors.white,
+                          inactiveTitleColor: AhlColors.transWhite20,
+                        ),
+                        TabItem(
+                          title: "Monthly",
+                          titleColor: Colors.white,
+                          inactiveTitleColor: AhlColors.transWhite20,
+                        ),
+                      ],
+                    ),
                   ),
-                  _ItemButton(
-                    "Reminder",
-                    icon: LucideIcons.alarmClock400,
-                    onPressed: () {},
-                  ),
-                  _ItemButton(
-                    "Transaction",
-                    icon: LucideIcons.circleDollarSign400,
+                  Spacer(),
+                  AhlIconButton(
+                    icon: LucideIcons.bolt400,
+                    iconColor: Colors.white,
+                    hoveredIconColor: Colors.white,
                     onPressed: () {
-                      context.go("/transactions/edit");
+                      context.go("/timelines");
                     },
                   ),
                 ],
               ),
-            ),
-          );
-        }
-
-        return Expanded(
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: AhlTabLayout(
-                  initialIndex: 0,
-                  type: TabLayoutType.secondary,
-                  mode: TabLayoutMode.dark,
-                  items: [
-                    TabItem(
-                      title: "Timeline",
-                      titleColor: Colors.white,
-                      inactiveTitleColor: AhlColors.transWhite20,
-                    ),
-                    TabItem(
-                      title: "Monthly",
-                      titleColor: Colors.white,
-                      inactiveTitleColor: AhlColors.transWhite20,
-                    ),
-                  ],
-                ),
-              ),
-              Spacer(),
-              AhlIconButton(
-                icon: LucideIcons.bolt400,
-                iconColor: Colors.white,
-                hoveredIconColor: Colors.white,
-                onPressed: () {
-                  context.go("/timelines");
-                },
-              ),
-            ],
-          ),
-        );
-      },
-      // trailingIcon: _openItemMenu ? LucideIcons.x400 : LucideIcons.plus400,
-      trailingWidgetBuilder: (context) {
-        return AhlIconButton(
-          onPressed: () {
-            setState(() {
-              _openItemMenu = !_openItemMenu;
-            });
+            );
           },
-          builder: (context) => AnimatedRotation(
-            turns: _openItemMenu ? 0.125 : 0,
-            duration: const Duration(milliseconds: 200),
-            curve: Curves.easeInOut,
-            child: Icon(LucideIcons.plus400, color: Colors.white),
-          ),
+          // trailingIcon: _openItemMenu ? LucideIcons.x400 : LucideIcons.plus400,
+          trailingWidgetBuilder: (context) {
+            return AhlIconButton(
+              onPressed: () {
+                setState(() {
+                  _openItemMenu = !_openItemMenu;
+                });
+              },
+              builder: (context, _) => AnimatedRotation(
+                turns: _openItemMenu ? 0.125 : 0,
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.easeInOut,
+                child: Icon(LucideIcons.plus400, color: Colors.white),
+              ),
+            );
+          },
+          onTrailingBtnClick: () {},
         );
-      },
-      onTrailingBtnClick: () {},
-    );
+      case 1: // Space
+
+        return AhlActionBar(
+          leadingWidgetBuilder: (context) => AhlBreadcrumbBar<Space>(
+            currentItem: _currentSpace,
+            isToggled: _isBreadcrumbExpanded,
+            children: _spaces
+                .where(
+                  (s) => s.spaceUser.parentSpaceId == _currentSpace.spaceId,
+                )
+                .toList(),
+            parentResolver: (currentSpace) =>
+                currentSpace.spaceUser.parentSpaceId != null
+                ? _spaces.firstWhere(
+                    (s) => s.spaceId == currentSpace.spaceUser.parentSpaceId,
+                  )
+                : null,
+            onMenuToggled: (isToggled) {
+              setState(() {
+                if (isToggled) {
+                  _expandedSpaces = _spaces
+                      .where(
+                        (s) =>
+                            s.spaceUser.parentSpaceId == _currentSpace.spaceId,
+                      )
+                      .toList();
+                } else {
+                  _expandedSpaces = [];
+                }
+                _isBreadcrumbExpanded = isToggled;
+              });
+            },
+            builder: (BuildContext context, Space space) {
+              return Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: AhlTappable(
+                  onPressed: () {
+                    setState(() {
+                      _currentSpace = space;
+                      _isBreadcrumbExpanded = false;
+                    });
+                  },
+                  builder: (isPressed) => Text(
+                    space.title,
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                  ),
+                ),
+              );
+            },
+          ),
+          trailingIcon: !_isBreadcrumbExpanded ? LucideIcons.plus400 : null,
+        );
+      default:
+        return Placeholder();
+    }
   }
 }
 

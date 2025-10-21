@@ -1,5 +1,6 @@
 import 'package:aholic/domain/entities/checklist.dart';
 import 'package:aholic/domain/entities/checklist_item.dart';
+import 'package:aholic/domain/entities/pinnable.dart';
 import 'package:aholic/presentation/theme/ahl_colors.dart';
 import 'package:aholic/presentation/widgets/ahl_staggered_grid_view.dart';
 import 'package:aholic/presentation/widgets/checklist_widget.dart';
@@ -13,40 +14,105 @@ class SpaceFragment extends StatelessWidget {
 
   final items = [
     Checklist(
-      title: "Grocery",
+      pinnable: Pinnable(
+        title: "Grocery",
+        note: '',
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
       items: [
-        ChecklistItem(title: "mac mini", order: 1),
-        ChecklistItem(title: "Chair", order: 2),
-        ChecklistItem(title: "Carpets", order: 3),
+        ChecklistItem(
+          title: "mac mini",
+          order: 1,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
+        ChecklistItem(
+          title: "Chair",
+          order: 2,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
+        ChecklistItem(
+          title: "Carpets",
+          order: 3,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
       ],
-      color: AhlColors.yellow,
+      color: Colors.grey.toARGB32(),
     ),
     Checklist(
-      title: "Todo",
+      pinnable: Pinnable(
+        title: "Todo",
+        note: '',
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
       items: [
         ChecklistItem(
           title:
               "ccscscjfna oiefi noieneaf uionufoin uoin foinf aof oneofn oen oafnoen nfnaounuaonuoaenaeea uefnou nffae",
           order: 1,
+          createdAt: DateTime.now(),
+          createdBy: '',
         ),
-        ChecklistItem(title: "Chair", order: 2),
-        ChecklistItem(title: "Carpets", order: 3),
+        ChecklistItem(
+          title: "Chair",
+          order: 2,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
+        ChecklistItem(
+          title: "Carpets",
+          order: 3,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
       ],
-      color: AhlColors.cyan,
+      color: Colors.grey.toARGB32(),
     ),
     Checklist(
-      title: "Todo",
+      pinnable: Pinnable(
+        title: "Todo",
+        note: '',
+        createdAt: DateTime.now(),
+        createdBy: '',
+        updatedAt: DateTime.now(),
+        updatedBy: '',
+      ),
       items: [
         ChecklistItem(
-          title:
-              "oefenioenfioaf eooifnaoiaio",
+          title: "oefenioenfioaf eooifnaoiaio",
           order: 1,
+          createdAt: DateTime.now(),
+          createdBy: '',
         ),
-        ChecklistItem(title: "afionae oianoia oanoianoa ofan fioa foanfoan", order: 2),
-        ChecklistItem(title: "fnaiofn aoenionf eoin ea iaoaenfiaefoieanfanfoiaenoeaifn oainfoianfoieanfoianfofoinf", order: 3),
-        ChecklistItem(title: "fnafnaofinoi nfioafnoeafaofoififoieiofofoinf", order: 3),
+        ChecklistItem(
+          title: "afionae oianoia oanoianoa ofan fioa foanfoan",
+          order: 2,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
+        ChecklistItem(
+          title:
+              "fnaiofn aoenionf eoin ea iaoaenfiaefoieanfanfoiaenoeaifn oainfoianfoieanfoianfofoinf",
+          order: 3,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
+        ChecklistItem(
+          title: "fnafnaofinoi nfioafnoeafaofoififoieiofofoinf",
+          order: 3,
+          createdAt: DateTime.now(),
+          createdBy: '',
+        ),
       ],
-      color: AhlColors.red,
+      color: Colors.grey.toARGB32(),
     ),
   ];
 
@@ -84,30 +150,33 @@ class SpaceFragment extends StatelessWidget {
       maxSimultaneousDrags: 99,
       dataList: items,
       buildItems: (dragItems) {
-        return StaggeredGrid.count(
-          crossAxisCount: 2,
-          mainAxisSpacing: 12.0,
-          crossAxisSpacing: 12.0,
-          children: items
-              .map(
-                (i) => dragItems(
-                  data: i,
-                  child: StaggeredGridTile.fit(
-                    crossAxisCellCount: 1,
-                    child: ChecklistWidget(i),
+        return Padding(
+          padding: const EdgeInsets.only(top: 24.0, left: 16.0, right: 16.0),
+          child: StaggeredGrid.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: 12.0,
+            crossAxisSpacing: 12.0,
+            children: items
+                .map(
+                  (i) => dragItems(
+                    data: i,
+                    child: StaggeredGridTile.fit(
+                      crossAxisCellCount: 1,
+                      child: ChecklistWidget(i),
+                    ),
+                    key: ValueKey<String>(items.indexOf(i).toString()),
                   ),
-                  key: ValueKey<String>(items.indexOf(i).toString()),
-                ),
-              )
-              .toList(),
+                )
+                .toList(),
 
-          //  [
-          //   ,
-          //   StaggeredGridTile.fit(
-          //     crossAxisCellCount: 1,
-          //     child: ChecklistWidget(),
-          //   ),
-          // ],
+            //  [
+            //   ,
+            //   StaggeredGridTile.fit(
+            //     crossAxisCellCount: 1,
+            //     child: ChecklistWidget(),
+            //   ),
+            // ],
+          ),
         );
       },
     );

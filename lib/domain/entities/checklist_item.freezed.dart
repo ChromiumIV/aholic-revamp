@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChecklistItem {
 
- String get title; int get order; bool get isChecked;
+ int? get itemId; int? get pinnableId; String get title; int get order; bool get isChecked; DateTime get createdAt; String get createdBy;
 /// Create a copy of ChecklistItem
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ChecklistItemCopyWith<ChecklistItem> get copyWith => _$ChecklistItemCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistItem&&(identical(other.title, title) || other.title == title)&&(identical(other.order, order) || other.order == order)&&(identical(other.isChecked, isChecked) || other.isChecked == isChecked));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChecklistItem&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.pinnableId, pinnableId) || other.pinnableId == pinnableId)&&(identical(other.title, title) || other.title == title)&&(identical(other.order, order) || other.order == order)&&(identical(other.isChecked, isChecked) || other.isChecked == isChecked)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,order,isChecked);
+int get hashCode => Object.hash(runtimeType,itemId,pinnableId,title,order,isChecked,createdAt,createdBy);
 
 @override
 String toString() {
-  return 'ChecklistItem(title: $title, order: $order, isChecked: $isChecked)';
+  return 'ChecklistItem(itemId: $itemId, pinnableId: $pinnableId, title: $title, order: $order, isChecked: $isChecked, createdAt: $createdAt, createdBy: $createdBy)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $ChecklistItemCopyWith<$Res>  {
   factory $ChecklistItemCopyWith(ChecklistItem value, $Res Function(ChecklistItem) _then) = _$ChecklistItemCopyWithImpl;
 @useResult
 $Res call({
- String title, int order, bool isChecked
+ int? itemId, int? pinnableId, String title, int order, bool isChecked, DateTime createdAt, String createdBy
 });
 
 
@@ -62,12 +62,16 @@ class _$ChecklistItemCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistItem
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? order = null,Object? isChecked = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? itemId = freezed,Object? pinnableId = freezed,Object? title = null,Object? order = null,Object? isChecked = null,Object? createdAt = null,Object? createdBy = null,}) {
   return _then(_self.copyWith(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+itemId: freezed == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
+as int?,pinnableId: freezed == pinnableId ? _self.pinnableId : pinnableId // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int,isChecked: null == isChecked ? _self.isChecked : isChecked // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,createdBy: null == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -152,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  int order,  bool isChecked)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? itemId,  int? pinnableId,  String title,  int order,  bool isChecked,  DateTime createdAt,  String createdBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChecklistItem() when $default != null:
-return $default(_that.title,_that.order,_that.isChecked);case _:
+return $default(_that.itemId,_that.pinnableId,_that.title,_that.order,_that.isChecked,_that.createdAt,_that.createdBy);case _:
   return orElse();
 
 }
@@ -173,10 +177,10 @@ return $default(_that.title,_that.order,_that.isChecked);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  int order,  bool isChecked)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? itemId,  int? pinnableId,  String title,  int order,  bool isChecked,  DateTime createdAt,  String createdBy)  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistItem():
-return $default(_that.title,_that.order,_that.isChecked);case _:
+return $default(_that.itemId,_that.pinnableId,_that.title,_that.order,_that.isChecked,_that.createdAt,_that.createdBy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +197,10 @@ return $default(_that.title,_that.order,_that.isChecked);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  int order,  bool isChecked)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? itemId,  int? pinnableId,  String title,  int order,  bool isChecked,  DateTime createdAt,  String createdBy)?  $default,) {final _that = this;
 switch (_that) {
 case _ChecklistItem() when $default != null:
-return $default(_that.title,_that.order,_that.isChecked);case _:
+return $default(_that.itemId,_that.pinnableId,_that.title,_that.order,_that.isChecked,_that.createdAt,_that.createdBy);case _:
   return null;
 
 }
@@ -208,12 +212,16 @@ return $default(_that.title,_that.order,_that.isChecked);case _:
 
 
 class _ChecklistItem implements ChecklistItem {
-  const _ChecklistItem({required this.title, required this.order, this.isChecked = false});
+  const _ChecklistItem({this.itemId, this.pinnableId, required this.title, required this.order, this.isChecked = false, required this.createdAt, required this.createdBy});
   
 
+@override final  int? itemId;
+@override final  int? pinnableId;
 @override final  String title;
 @override final  int order;
 @override@JsonKey() final  bool isChecked;
+@override final  DateTime createdAt;
+@override final  String createdBy;
 
 /// Create a copy of ChecklistItem
 /// with the given fields replaced by the non-null parameter values.
@@ -225,16 +233,16 @@ _$ChecklistItemCopyWith<_ChecklistItem> get copyWith => __$ChecklistItemCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistItem&&(identical(other.title, title) || other.title == title)&&(identical(other.order, order) || other.order == order)&&(identical(other.isChecked, isChecked) || other.isChecked == isChecked));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChecklistItem&&(identical(other.itemId, itemId) || other.itemId == itemId)&&(identical(other.pinnableId, pinnableId) || other.pinnableId == pinnableId)&&(identical(other.title, title) || other.title == title)&&(identical(other.order, order) || other.order == order)&&(identical(other.isChecked, isChecked) || other.isChecked == isChecked)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.createdBy, createdBy) || other.createdBy == createdBy));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,order,isChecked);
+int get hashCode => Object.hash(runtimeType,itemId,pinnableId,title,order,isChecked,createdAt,createdBy);
 
 @override
 String toString() {
-  return 'ChecklistItem(title: $title, order: $order, isChecked: $isChecked)';
+  return 'ChecklistItem(itemId: $itemId, pinnableId: $pinnableId, title: $title, order: $order, isChecked: $isChecked, createdAt: $createdAt, createdBy: $createdBy)';
 }
 
 
@@ -245,7 +253,7 @@ abstract mixin class _$ChecklistItemCopyWith<$Res> implements $ChecklistItemCopy
   factory _$ChecklistItemCopyWith(_ChecklistItem value, $Res Function(_ChecklistItem) _then) = __$ChecklistItemCopyWithImpl;
 @override @useResult
 $Res call({
- String title, int order, bool isChecked
+ int? itemId, int? pinnableId, String title, int order, bool isChecked, DateTime createdAt, String createdBy
 });
 
 
@@ -262,12 +270,16 @@ class __$ChecklistItemCopyWithImpl<$Res>
 
 /// Create a copy of ChecklistItem
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? order = null,Object? isChecked = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? itemId = freezed,Object? pinnableId = freezed,Object? title = null,Object? order = null,Object? isChecked = null,Object? createdAt = null,Object? createdBy = null,}) {
   return _then(_ChecklistItem(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+itemId: freezed == itemId ? _self.itemId : itemId // ignore: cast_nullable_to_non_nullable
+as int?,pinnableId: freezed == pinnableId ? _self.pinnableId : pinnableId // ignore: cast_nullable_to_non_nullable
+as int?,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,order: null == order ? _self.order : order // ignore: cast_nullable_to_non_nullable
 as int,isChecked: null == isChecked ? _self.isChecked : isChecked // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as DateTime,createdBy: null == createdBy ? _self.createdBy : createdBy // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Checklist {
 
- String get title; List<ChecklistItem> get items; Color get color;
+ Pinnable get pinnable; int get color; List<ChecklistItem> get items;
 /// Create a copy of Checklist
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ChecklistCopyWith<Checklist> get copyWith => _$ChecklistCopyWithImpl<Checklist>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Checklist&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other.items, items)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Checklist&&(identical(other.pinnable, pinnable) || other.pinnable == pinnable)&&(identical(other.color, color) || other.color == color)&&const DeepCollectionEquality().equals(other.items, items));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(items),color);
+int get hashCode => Object.hash(runtimeType,pinnable,color,const DeepCollectionEquality().hash(items));
 
 @override
 String toString() {
-  return 'Checklist(title: $title, items: $items, color: $color)';
+  return 'Checklist(pinnable: $pinnable, color: $color, items: $items)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $ChecklistCopyWith<$Res>  {
   factory $ChecklistCopyWith(Checklist value, $Res Function(Checklist) _then) = _$ChecklistCopyWithImpl;
 @useResult
 $Res call({
- String title, List<ChecklistItem> items, Color color
+ Pinnable pinnable, int color, List<ChecklistItem> items
 });
 
 
-
+$PinnableCopyWith<$Res> get pinnable;
 
 }
 /// @nodoc
@@ -62,15 +62,24 @@ class _$ChecklistCopyWithImpl<$Res>
 
 /// Create a copy of Checklist
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? items = null,Object? color = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? pinnable = null,Object? color = null,Object? items = null,}) {
   return _then(_self.copyWith(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
-as List<ChecklistItem>,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
-as Color,
+pinnable: null == pinnable ? _self.pinnable : pinnable // ignore: cast_nullable_to_non_nullable
+as Pinnable,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as int,items: null == items ? _self.items : items // ignore: cast_nullable_to_non_nullable
+as List<ChecklistItem>,
   ));
 }
-
+/// Create a copy of Checklist
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PinnableCopyWith<$Res> get pinnable {
+  
+  return $PinnableCopyWith<$Res>(_self.pinnable, (value) {
+    return _then(_self.copyWith(pinnable: value));
+  });
+}
 }
 
 
@@ -152,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String title,  List<ChecklistItem> items,  Color color)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Pinnable pinnable,  int color,  List<ChecklistItem> items)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Checklist() when $default != null:
-return $default(_that.title,_that.items,_that.color);case _:
+return $default(_that.pinnable,_that.color,_that.items);case _:
   return orElse();
 
 }
@@ -173,10 +182,10 @@ return $default(_that.title,_that.items,_that.color);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String title,  List<ChecklistItem> items,  Color color)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Pinnable pinnable,  int color,  List<ChecklistItem> items)  $default,) {final _that = this;
 switch (_that) {
 case _Checklist():
-return $default(_that.title,_that.items,_that.color);case _:
+return $default(_that.pinnable,_that.color,_that.items);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -193,10 +202,10 @@ return $default(_that.title,_that.items,_that.color);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String title,  List<ChecklistItem> items,  Color color)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Pinnable pinnable,  int color,  List<ChecklistItem> items)?  $default,) {final _that = this;
 switch (_that) {
 case _Checklist() when $default != null:
-return $default(_that.title,_that.items,_that.color);case _:
+return $default(_that.pinnable,_that.color,_that.items);case _:
   return null;
 
 }
@@ -208,10 +217,11 @@ return $default(_that.title,_that.items,_that.color);case _:
 
 
 class _Checklist implements Checklist {
-  const _Checklist({required this.title, required final  List<ChecklistItem> items, required this.color}): _items = items;
+  const _Checklist({required this.pinnable, required this.color, required final  List<ChecklistItem> items}): _items = items;
   
 
-@override final  String title;
+@override final  Pinnable pinnable;
+@override final  int color;
  final  List<ChecklistItem> _items;
 @override List<ChecklistItem> get items {
   if (_items is EqualUnmodifiableListView) return _items;
@@ -219,7 +229,6 @@ class _Checklist implements Checklist {
   return EqualUnmodifiableListView(_items);
 }
 
-@override final  Color color;
 
 /// Create a copy of Checklist
 /// with the given fields replaced by the non-null parameter values.
@@ -231,16 +240,16 @@ _$ChecklistCopyWith<_Checklist> get copyWith => __$ChecklistCopyWithImpl<_Checkl
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Checklist&&(identical(other.title, title) || other.title == title)&&const DeepCollectionEquality().equals(other._items, _items)&&(identical(other.color, color) || other.color == color));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Checklist&&(identical(other.pinnable, pinnable) || other.pinnable == pinnable)&&(identical(other.color, color) || other.color == color)&&const DeepCollectionEquality().equals(other._items, _items));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,title,const DeepCollectionEquality().hash(_items),color);
+int get hashCode => Object.hash(runtimeType,pinnable,color,const DeepCollectionEquality().hash(_items));
 
 @override
 String toString() {
-  return 'Checklist(title: $title, items: $items, color: $color)';
+  return 'Checklist(pinnable: $pinnable, color: $color, items: $items)';
 }
 
 
@@ -251,11 +260,11 @@ abstract mixin class _$ChecklistCopyWith<$Res> implements $ChecklistCopyWith<$Re
   factory _$ChecklistCopyWith(_Checklist value, $Res Function(_Checklist) _then) = __$ChecklistCopyWithImpl;
 @override @useResult
 $Res call({
- String title, List<ChecklistItem> items, Color color
+ Pinnable pinnable, int color, List<ChecklistItem> items
 });
 
 
-
+@override $PinnableCopyWith<$Res> get pinnable;
 
 }
 /// @nodoc
@@ -268,16 +277,25 @@ class __$ChecklistCopyWithImpl<$Res>
 
 /// Create a copy of Checklist
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? items = null,Object? color = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? pinnable = null,Object? color = null,Object? items = null,}) {
   return _then(_Checklist(
-title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
-as String,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
-as List<ChecklistItem>,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
-as Color,
+pinnable: null == pinnable ? _self.pinnable : pinnable // ignore: cast_nullable_to_non_nullable
+as Pinnable,color: null == color ? _self.color : color // ignore: cast_nullable_to_non_nullable
+as int,items: null == items ? _self._items : items // ignore: cast_nullable_to_non_nullable
+as List<ChecklistItem>,
   ));
 }
 
-
+/// Create a copy of Checklist
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$PinnableCopyWith<$Res> get pinnable {
+  
+  return $PinnableCopyWith<$Res>(_self.pinnable, (value) {
+    return _then(_self.copyWith(pinnable: value));
+  });
+}
 }
 
 // dart format on
