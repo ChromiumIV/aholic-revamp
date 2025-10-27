@@ -17,7 +17,8 @@ class AhlActionBar extends StatelessWidget {
     this.onTrailingBtnClick,
     this.padding = const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 33.0),
     this.fillColor = AhlColors.transBlack81,
-    this.iconColor = Colors.white,
+    this.leadingIconColor = Colors.white,
+    this.trailingIconColor = Colors.white,
     this.dividerColor = AhlColors.transWhite20,
     this.hasShadow = true,
   });
@@ -30,7 +31,8 @@ class AhlActionBar extends StatelessWidget {
   VoidCallback? onTrailingBtnClick;
   EdgeInsets padding;
   Color fillColor;
-  Color iconColor;
+  Color leadingIconColor;
+  Color trailingIconColor;
   Color dividerColor;
   bool hasShadow;
 
@@ -72,8 +74,8 @@ class AhlActionBar extends StatelessWidget {
       children.add(
         AhlIconButton(
           icon: licn,
-          iconColor: iconColor,
-          hoveredIconColor: iconColor,
+          iconColor: leadingIconColor,
+          hoveredIconColor: leadingIconColor,
           onPressed: () {
             onLeadingBtnClick?.call();
           },
@@ -111,8 +113,8 @@ class AhlActionBar extends StatelessWidget {
       children.add(
         AhlIconButton(
           icon: ticn,
-          iconColor: iconColor,
-          hoveredIconColor: iconColor,
+          iconColor: trailingIconColor,
+          hoveredIconColor: trailingIconColor,
           onPressed: () {
             onTrailingBtnClick?.call();
           },

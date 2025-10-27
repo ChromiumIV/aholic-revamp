@@ -1,3 +1,4 @@
+import 'package:aholic/presentation/pages/edit_checklist_page.dart';
 import 'package:aholic/presentation/pages/edit_event_page.dart';
 import 'package:aholic/presentation/pages/edit_timeline_page.dart';
 import 'package:aholic/presentation/pages/edit_transaction_page.dart';
@@ -28,6 +29,10 @@ final router = GoRouter(
         GoRoute(
           path: 'transactions/edit',
           builder: (context, state) => EditTransactionPage(),
+        ),
+        GoRoute(
+          path: 'checklists/edit',
+          builder: (context, state) => EditChecklistPage(),
         ),
       ],
     ),

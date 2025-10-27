@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:aholic/presentation/routing/router.dart';
 import 'package:aholic/presentation/theme/ahl_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:local_hero/local_hero.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AhlApp extends StatelessWidget {
   const AhlApp({super.key});
@@ -11,12 +11,14 @@ class AhlApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Aholic',
-      theme: ahlTheme,
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
-      scrollBehavior: AppScrollBehavior(),
+    return ProviderScope(
+      child: MaterialApp.router(
+        title: 'Aholic',
+        theme: ahlTheme,
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
+        scrollBehavior: AppScrollBehavior(),
+      ),
     );
   }
 }

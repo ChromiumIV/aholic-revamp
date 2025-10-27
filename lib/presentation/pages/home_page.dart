@@ -364,11 +364,9 @@ class _HomePageState extends State<HomePage> {
         return AhlActionBar(
           leadingWidgetBuilder: (context) => AhlBreadcrumbBar<Space>(
             currentItem: _currentSpace,
-            isToggled: _isBreadcrumbExpanded,
-            children: _spaces
-                .where(
-                  (s) => s.spaceUser.parentSpaceId == _currentSpace.spaceId,
-                )
+            // isToggled: _isBreadcrumbExpanded,
+            childrenResolver: (currentSpace) => _spaces
+                .where((s) => s.spaceUser.parentSpaceId == currentSpace.spaceId)
                 .toList(),
             parentResolver: (currentSpace) =>
                 currentSpace.spaceUser.parentSpaceId != null
@@ -391,31 +389,41 @@ class _HomePageState extends State<HomePage> {
                 _isBreadcrumbExpanded = isToggled;
               });
             },
-            builder: (BuildContext context, Space space) {
-              return Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: AhlTappable(
-                  onPressed: () {
-                    setState(() {
-                      _currentSpace = space;
-                      _isBreadcrumbExpanded = false;
-                    });
-                  },
-                  builder: (isPressed) => Text(
-                    space.title,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodyLarge?.copyWith(color: Colors.white),
-                  ),
-                ),
-              );
-            },
+            onItemSelected: (selectedSpace) => setState(() {
+              _currentSpace = selectedSpace;
+              _isBreadcrumbExpanded = false;
+            }),
+            // listItemBuilder: (BuildContext context, Space space) => Row(
+            //   children: [Expanded(child: _buildSpaceItem(context, space))],
+            // ),
+            builder: (BuildContext context, Space space) =>
+                _buildSpaceItem(context, space),
           ),
           trailingIcon: !_isBreadcrumbExpanded ? LucideIcons.plus400 : null,
+          onTrailingBtnClick: () {
+            context.go("/checklists/edit");
+          },
         );
       default:
         return Placeholder();
     }
+  }
+
+  Widget _buildSpaceItem(BuildContext context, Space space) {
+    // return AhlTappable(
+    //   onPressed: () {
+    //     setState(() {
+    //       _currentSpace = space;
+    //       _isBreadcrumbExpanded = false;
+    //     });
+    //   },
+    //   builder: (isPressed) =>
+    return Text(
+      space.title,
+      style: Theme.of(
+        context,
+      ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+    );
   }
 }
 
